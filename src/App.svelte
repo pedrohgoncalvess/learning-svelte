@@ -1,10 +1,21 @@
 <script lang="ts">
 	import Title from "./components/Title.svelte";
-
+	import type IUSers from "./interfaces/IUsers";
+	import User from "./components/User.svelte";
 
 	let valueInput:string
+	let user: IUSers = null;
+
 	function toTheSubmit() {
-		console.log(valueInput)
+		user = {
+			pic_url: "https://github.com/pedrohgoncalvess.png",
+			login:"pedrohgoncalvess",
+			name:"Pedro Henrique",
+			perfil:"https://github.com/pedrohgoncalvess",
+			public_repositorys:29,
+			followers:11
+		};
+		return user
 	}
 </script>
 
@@ -13,17 +24,23 @@
 	<Title/>
 
 		<div class="search-user">
+
 			<form on:submit|preventDefault={toTheSubmit}>
+
 				<input type="text" class="input" bind:value={valueInput}>
 
 				<div class="button-container">
 					<button type="submit" class="button">Search</button>
 				</div>
+
 			</form>
 		</div>
 	</header>
-</div>
 
+{#if user}
+	<User user={user}/>
+{/if}
+</div>
 
 <style>
 	.app {
@@ -89,5 +106,4 @@
 	.button:hover {
 		background: #4590ff;
 	}
-
 </style>
