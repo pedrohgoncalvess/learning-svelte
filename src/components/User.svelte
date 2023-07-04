@@ -1,0 +1,85 @@
+<script lang="ts">
+import TopBar from "./TopBar.svelte";
+import type IUSers from "../interfaces/IUsers";
+
+export let user: IUSers;
+
+</script>
+<div class="card-user">
+    <TopBar/>
+
+    <div class="user">
+        <div class="photo-container">
+        <a href={user.perfil} target="_blank" rel="noopener">
+            <div
+             class="photo-user"
+             style:background-image="url({user.pic_url})"/>
+        </a>
+        </div>
+
+        <div class="detail-user">
+
+            <div class="info">
+                Nome: <span>{user.name}</span>
+            </div>
+
+            <div class="info">
+                Usuário: <span>{user.login}</span>
+            </div>
+
+            <div class="info">
+                Seguidores: <span>{user.followers}</span>
+            </div>
+
+            <div class="info">
+                Repositórios: <span>{user.public_repositorys}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .card-user {
+        margin: auto;
+        width: 40%;
+        margin-top: 65px;
+    }
+
+    .user {
+        padding: 28px 0;
+        background: rgba(255, 255, 255, 0.5);
+        box-shadow: -12px 37px 45px rgba(133, 127, 201, 0.18);
+        border-radius: 0px 0px 13px 13px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .photo-user {
+        margin-right: 81px;
+    }
+
+    .photo-user {
+        width: 12.75rem;
+        height: 12.75rem;
+        border: 4.56px solid #2e80fa;
+        border-radius: 50%;
+        background-size: cover;
+    }
+
+    .detail-user {
+        margin-right: 55px;
+    }
+
+    .detail-user > .info {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 31px;
+        color: #395278;
+    }
+
+    .detail-user > .info > span {
+        color: #6781a8;
+        font-weight: normal;
+    }
+</style>
