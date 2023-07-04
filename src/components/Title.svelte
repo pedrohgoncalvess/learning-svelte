@@ -1,4 +1,4 @@
-<h1 class="title">Profiles</h1>
+<h1 class="title">Svelte Perfis</h1>
 
 <style>
     .title {
