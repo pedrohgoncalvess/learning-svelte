@@ -18,11 +18,11 @@ export let user: IUSers;
         </div>
 
         <div class="detail-user">
-
+            {#if user.name}
             <div class="info">
                 Nome: <span>{user.name}</span>
             </div>
-
+            {/if}
             <div class="info">
                 Usuário: <span>{user.login}</span>
             </div>
@@ -41,19 +41,12 @@ export let user: IUSers;
 <style>
 
     .card-user {
-        margin: auto;
-        width: 40%;
+        margin-right: auto;
+        margin-left: auto;
+        width: 60%;
         margin-top: 65px;
     }
 
-    .user {
-        padding: 28px 0;
-        background: rgba(255, 255, 255, 0.5);
-        box-shadow: -12px 37px 45px rgba(133, 127, 201, 0.18);
-        border-radius: 0px 0px 13px 13px;
-        display: flex;
-        justify-content: center;
-    }
 
     .photo-user {
         margin-right: 81px;
@@ -81,5 +74,15 @@ export let user: IUSers;
     .detail-user > .info > span {
         color: #6781a8;
         font-weight: normal;
+    }
+
+    .user {
+        padding: 28px 0;
+        background: rgba(255, 255, 255, 0.5);
+        box-shadow: -12px 37px 45px rgba(133, 127, 201, 0.18);
+        border-radius: 0px 0px 13px 13px;
+        display: flex;
+        justify-content: center;
+        height: auto;
     }
 </style>
