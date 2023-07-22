@@ -1,33 +1,53 @@
 <script lang="ts">
     import type IUSers from "../interfaces/IUsers";
+    import {createEventDispatcher} from "svelte";
+    import {searchRepositories, searchUser} from "../requests";
+    import initUser from "../utils/initUser";
+    import Button from "./Button.svelte";
 
     let valueInput:string
-    export let user:IUSers | null;
-    async function toTheSubmit() {
-        const responseUser = await fetch(`https://api.github.com/users/${valueInput}`)
-        const dataUser = await responseUser.json();
+    let responseStatus: null | number = null;
 
-        console.log(dataUser)
-        user = {
-            pic_url: dataUser.avatar_url,
-            login: dataUser.login,
-            name: dataUser.name,
-            perfil: dataUser.html_url,
-            public_repositorys: dataUser.public_repos,
-            followers: dataUser.followers
-        };
-        return user
+    const dispach = createEventDispatcher<{
+        changingUser:IUSers|null
+    }>
+    ()
+    async function toTheSubmit() {
+        const responseUser = await searchUser(valueInput);
+        const responseRepos = await searchRepositories(valueInput);
+
+        if (responseUser.ok && responseRepos.ok) {
+
+            const dataUser = await responseUser.json();
+            const dataRepos = await responseRepos.json();
+
+            dispach("changingUser",
+            initUser(dataUser,dataRepos)
+            )
+            responseStatus = null;
+        } else {
+            responseStatus = responseUser.status
+            dispach("changingUser",null)
+        }
     }
 </script>
 
 <form on:submit|preventDefault={toTheSubmit}>
 
-    <input type="text" class="input" bind:value={valueInput}>
+    <input
+            type="text"
+            class="input"
+            bind:value={valueInput}
+            class:error-input={responseStatus === 404}
+    >
 
-    <div class="button-container">
-        <button type="submit" class="button">Search</button>
-    </div>
+    {#if responseStatus === 404}
+        <span class="error">Usuário não encontrado</span>
+    {/if}
 
+    <Button>
+        Search
+    </Button>
 </form>
 
 <style>
@@ -51,33 +71,20 @@
         color: #6e8cba;
     }
 
-    .button-container {
+    .error {
         position: absolute;
-        width: 9.625rem;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        display: flex;
+        bottom: -25px;
+        left: 0;
+        font-style: italic;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 19px;
+        z-index: -1;
+        color: #ff003e;
     }
 
-    .button {
-        padding: 15px 24px;
-        border-radius: 8px;
-        border: none;
-        background: #2e80fa;
-        line-height: 26px;
-        color: #fff;
-        font-size: 22px;
-        cursor: pointer;
-
-        transition: background-color 0.2s;
-
-        display: flex;
-        align-items: center;
-        gap: 13px;
+    .error-input {
+        border: 1px solid red;
     }
 
-    .button:hover {
-        background: #4590ff;
-    }
 </style>
