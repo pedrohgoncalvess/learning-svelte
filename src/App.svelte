@@ -5,6 +5,10 @@
 	import Form from "./components/Form.svelte";
 	export let user: IUSers = null;
 
+	function defineUser(event: CustomEvent<IUSers|null>) {
+		user = event.detail
+	}
+
 </script>
 
 <div class="app">
@@ -13,7 +17,7 @@
 
 		<div class="search-user">
 
-			<Form bind:user={user}/>
+			<Form on:changingUser={defineUser}/>
 
 		</div>
 	</header>
